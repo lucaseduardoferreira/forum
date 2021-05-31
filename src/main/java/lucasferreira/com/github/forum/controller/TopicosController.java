@@ -1,6 +1,7 @@
 package lucasferreira.com.github.forum.controller;
 
 
+import lucasferreira.com.github.forum.controller.dto.DetalhesDoTopicoDto;
 import lucasferreira.com.github.forum.controller.dto.TopicoDto;
 import lucasferreira.com.github.forum.controller.form.TopicoForm;
 import lucasferreira.com.github.forum.modelo.Topico;
@@ -8,13 +9,11 @@ import lucasferreira.com.github.forum.repository.CursoRepository;
 import lucasferreira.com.github.forum.repository.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
-import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/topicos")
@@ -45,6 +44,12 @@ public class TopicosController {
         topicoRepository.save(topico);
         return new TopicoDto(topico);
 
+    }
+
+    @GetMapping("/{id}")
+    public DetalhesDoTopicoDto detalhar(@PathVariable Long id){
+        Optional<Topico> topico = topicoRepository.findById(id);
+        return new DetalhesDoTopicoDto(topico.get());
     }
 /*
     public ResponseEntity<TopicoDto> cadastrar(@RequestBody @Valid TopicoForm form, UriComponentsBuilder uriBuilder) {
