@@ -2,7 +2,6 @@ package lucasferreira.com.github.forum.controller;
 
 
 import lucasferreira.com.github.forum.controller.dto.TopicoDto;
-import lucasferreira.com.github.forum.modelo.Curso;
 import lucasferreira.com.github.forum.modelo.Topico;
 import lucasferreira.com.github.forum.repository.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +19,14 @@ public class TopicosController {
     private TopicoRepository topicoRepository;
 
     @GetMapping
-    public List<TopicoDto> lista() {
-        List<Topico> topicos = topicoRepository.findAll();
-        return TopicoDto.coverter(topicos);
+    public List<TopicoDto> lista(String nomeCurso) {
+        if (nomeCurso == null) {
+            List<Topico> topicos = topicoRepository.findAll();
+            return TopicoDto.converter(topicos);
+        } else {
+            List<Topico> topicos = topicoRepository.findByCursoNome(nomeCurso);
+            return TopicoDto.converter(topicos);
+        }
     }
 
 }
