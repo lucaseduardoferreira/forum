@@ -61,6 +61,12 @@ public class TopicosController {
         Topico topico = form.atualizar(id, topicoRepository);//Ja atualiza em memoria e depois atualiza no BD
         return new TopicoDto(topico);
     }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void remover(@PathVariable Long id){
+        topicoRepository.deleteById(id);
+    }
 /*
     public ResponseEntity<TopicoDto> cadastrar(@RequestBody @Valid TopicoForm form, UriComponentsBuilder uriBuilder) {
         Topico topico = form.converter(cursoRepository);
