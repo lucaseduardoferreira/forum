@@ -7,6 +7,7 @@ import lucasferreira.com.github.forum.modelo.Topico;
 import lucasferreira.com.github.forum.repository.CursoRepository;
 import lucasferreira.com.github.forum.repository.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,11 +34,12 @@ public class TopicosController {
     }
 
     @PostMapping
-    public void cadatrar(@RequestBody TopicoForm form){
+    @ResponseStatus(HttpStatus.CREATED)
+    public TopicoDto cadatrar(@RequestBody TopicoForm form){
         Topico topico = form.converter(cursoRepository);
 
         topicoRepository.save(topico);
-
+        return new TopicoDto(topico);
 
     }
 
