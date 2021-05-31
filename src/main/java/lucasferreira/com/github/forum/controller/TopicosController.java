@@ -3,12 +3,14 @@ package lucasferreira.com.github.forum.controller;
 
 import lucasferreira.com.github.forum.controller.dto.DetalhesDoTopicoDto;
 import lucasferreira.com.github.forum.controller.dto.TopicoDto;
+import lucasferreira.com.github.forum.controller.form.AtualizacaoTopicoForm;
 import lucasferreira.com.github.forum.controller.form.TopicoForm;
 import lucasferreira.com.github.forum.modelo.Topico;
 import lucasferreira.com.github.forum.repository.CursoRepository;
 import lucasferreira.com.github.forum.repository.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -50,6 +52,14 @@ public class TopicosController {
     public DetalhesDoTopicoDto detalhar(@PathVariable Long id){
         Optional<Topico> topico = topicoRepository.findById(id);
         return new DetalhesDoTopicoDto(topico.get());
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @Transactional
+    public TopicoDto atualizar(@PathVariable Long id, @RequestBody @Valid AtualizacaoTopicoForm form){
+        Topico topico = form.atualizar(id, topicoRepository);//Ja atualiza em memoria e depois atualiza no BD
+        return new TopicoDto(topico);
     }
 /*
     public ResponseEntity<TopicoDto> cadastrar(@RequestBody @Valid TopicoForm form, UriComponentsBuilder uriBuilder) {
