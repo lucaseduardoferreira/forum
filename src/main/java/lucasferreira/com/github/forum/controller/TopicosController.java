@@ -8,9 +8,12 @@ import lucasferreira.com.github.forum.repository.CursoRepository;
 import lucasferreira.com.github.forum.repository.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -33,25 +36,27 @@ public class TopicosController {
             return TopicoDto.converter(topicos);
         }
     }
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public TopicoDto cadatrar(@RequestBody @Valid TopicoForm form){
         Topico topico = form.converter(cursoRepository);
+        System.out.println("teste");
 
         topicoRepository.save(topico);
         return new TopicoDto(topico);
 
     }
-    /*Mesma coisa do metodo acima
-        public ResponseEntity<TopicoDto> cadastrar(@RequestBody TopicoForm form, UriComponentsBuilder uriBuilder) {
-            Topico topico = form.converter(cursoRepository);
-            topicoRepository.save(topico);
+/*
+    public ResponseEntity<TopicoDto> cadastrar(@RequestBody @Valid TopicoForm form, UriComponentsBuilder uriBuilder) {
+        Topico topico = form.converter(cursoRepository);
+        topicoRepository.save(topico);
 
-            URI uri = uriBuilder.path("/topicos/{id}").buildAndExpand(topico.getId()).toUri();
-            return ResponseEntity.created(uri).body(new TopicoDto(topico));
-        }
-     */
+        URI uri = uriBuilder.path("/topicos/{id}").buildAndExpand(topico.getId()).toUri();
+        return ResponseEntity.created(uri).body(new TopicoDto(topico));
+    }
+*/
+
+
 
 }
 
