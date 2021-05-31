@@ -4,11 +4,20 @@ import lucasferreira.com.github.forum.modelo.Curso;
 import lucasferreira.com.github.forum.modelo.Topico;
 import lucasferreira.com.github.forum.repository.CursoRepository;
 import lucasferreira.com.github.forum.repository.TopicoRepository;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 public class TopicoForm {
 
+    @NotNull @NotEmpty @Length(min = 5)
     private String titulo;
+
+    @NotNull @NotEmpty @Length(min = 5)
     private String mensagem;
+
+    @NotNull @NotEmpty
     private String nomeCurso;
 
     public String getTitulo() {
@@ -39,4 +48,5 @@ public class TopicoForm {
         Curso curso = cursoRepository.findByNome(nomeCurso);
         return new Topico(titulo, mensagem, curso);
     }
+
 }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -35,13 +36,22 @@ public class TopicosController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TopicoDto cadatrar(@RequestBody TopicoForm form){
+    public TopicoDto cadatrar(@RequestBody @Valid TopicoForm form){
         Topico topico = form.converter(cursoRepository);
 
         topicoRepository.save(topico);
         return new TopicoDto(topico);
 
     }
+    /*Mesma coisa do metodo acima
+        public ResponseEntity<TopicoDto> cadastrar(@RequestBody TopicoForm form, UriComponentsBuilder uriBuilder) {
+            Topico topico = form.converter(cursoRepository);
+            topicoRepository.save(topico);
+
+            URI uri = uriBuilder.path("/topicos/{id}").buildAndExpand(topico.getId()).toUri();
+            return ResponseEntity.created(uri).body(new TopicoDto(topico));
+        }
+     */
 
 }
 
