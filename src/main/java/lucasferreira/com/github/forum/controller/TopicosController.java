@@ -10,16 +10,15 @@ import lucasferreira.com.github.forum.repository.CursoRepository;
 import lucasferreira.com.github.forum.repository.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -32,11 +31,14 @@ public class TopicosController {
     @Autowired
     private CursoRepository cursoRepository;
 
+
+    //localhost:8080/topicos?page=0&size=3&sort=id,desc -> exemplo da url, para passar
+    //mais paramentos localhost:8080/topicos?page=0&size=3&sort=id,desc&sort=datacriacao,desc
     @GetMapping
     public Page<TopicoDto> lista(@RequestParam(required = false) String nomeCurso,
-                                 @RequestParam int pagina, @RequestParam int qtd, @RequestParam String ordenacao) {
-
-        Pageable paginacao = PageRequest.of(pagina, qtd, Sort.Direction.ASC, ordenacao);
+                                 @PageableDefault(sort = "id", direction = Sort.Direction.DESC, page = 0, size = 10) Pageable paginacao) {
+    //na assinatura acima, exemplo de deixar a ordenacao default, se passar algum parametro ele nao usa pagebleDefault
+    // se nao passar pagina e qtd no pageableDefault da pra definir
 
         if (nomeCurso == null) {
             Page<Topico> topicos = topicoRepository.findAll(paginacao);
